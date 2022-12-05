@@ -4,9 +4,3 @@ export interface ICar {
   production_year: number;
   price: number;
 }
-
-export enum CarClass {
-  A = 'A',
-  B = 'B',
-  C = 'C',
-}

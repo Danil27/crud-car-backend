@@ -1,16 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SortOrder } from 'mongoose';
 
-import { ICar } from 'src/datasourse/interfaces';
 import { factory } from 'src/utils/factory';
 import { CarService } from '../service';
+import { CarDto } from './dto';
 import { CarPresenter } from './presenter';
 
 @ApiTags('Car')
 @Controller({ path: 'car' })
 export class CarController {
-  constructor(private readonly carService: CarService) { }
+  constructor(private readonly carService: CarService) {}
 
   @ApiResponse({
     status: 200,
@@ -32,7 +31,7 @@ export class CarController {
   @ApiOperation({
     description: 'Получить список всех авто',
   })
-  @Get('sort?name=:name&brand=:brand')
+  @Get('name=:name&brand=:brand')
   public async findSortedBy(
     @Param('name') name: string,
     @Param('brand') brand: string,
@@ -49,7 +48,7 @@ export class CarController {
     description: 'Добавить авто',
   })
   @Post('')
-  public async create(@Body('body') body: ICar): Promise<CarPresenter> {
+  public async create(@Body() body: CarDto): Promise<CarPresenter> {
     return new CarPresenter(await this.carService.create(body));
   }
 }
